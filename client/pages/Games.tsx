@@ -1,165 +1,43 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  Sun,
-  Moon,
-  ArrowLeft,
-  Monitor,
-  PlayCircle,
-  Tv,
-  Download,
-  Globe,
-} from "lucide-react";
+import { Sun, Moon, ArrowLeft, Gamepad2 } from "lucide-react";
 import { updateMetaTags } from "@/lib/meta-tags";
 
-const streamingCategories = [
+const gamesCategories = [
   {
-    icon: Monitor,
-    title: "Streaming Services",
-    count: "26 platforms",
+    icon: Gamepad2,
+    title: "Download Games For Free",
+    count: "14 resources",
     links: [
-      { name: "Cineby", url: "https://www.cineby.app/" },
-      { name: "2Flix", url: "https://www.cineby.su/" },
-      { name: "BroFlix", url: "https://broflix.cc/" },
-      { name: "NetMirror", url: "https://netmirror.app/" },
-      { name: "Freek", url: "https://freek.to/" },
-      { name: "HydraHD", url: "https://hydrahd.com/" },
-      { name: "NEPU", url: "https://nepu.to/" },
-      { name: "Smashystream", url: "https://smashystream.com/" },
-      { name: "Cineb", url: "https://cineb.rs/" },
-      { name: "Watch2Day", url: "https://watch2day.online/" },
-      { name: "456movie", url: "https://456movie.com/" },
-      { name: "7x Stream", url: "https://cinema.7xtream.com/" },
-      { name: "7x Movies", url: "https://movies.7xtream.com/" },
-      { name: "YupMovies", url: "https://yupmovies.in" },
-      { name: "345Movie", url: "https://www.345movie.net/" },
-      { name: "BrocoFlix", url: "https://brocoflix.com/" },
-      { name: "Filmex", url: "https://filmex.to/" },
-      { name: "Heartive", url: "https://heartive.pages.dev/" },
-      {
-        name: "movie-web",
-        url: "https://erynith.github.io/movie-web-instances/",
-      },
-      { name: "MovieUwU", url: "https://movieuwutv.top/" },
-      { name: "Putlocker", url: "https://putlocker.pe/" },
-      { name: "ShowboxMovies", url: "https://www.showboxmovies.net/" },
-      { name: "VidPlay", url: "https://vidplay.org/" },
-      { name: "xpWatch", url: "https://xpwatch-v2.pages.dev/" },
-      { name: "YoYoMovies", url: "https://Yoyomovies.net/" },
-      { name: "Zoechip", url: "https://zoechip.org/" },
-    ],
-  },
-  {
-    icon: PlayCircle,
-    title: "Additional Platforms",
-    count: "23 platforms",
-    links: [
-      { name: "AutoEmbed", url: "https://watch.autoembed.cc/" },
-      { name: "BingeMaster", url: "https://bingemaster.netlify.app/" },
-      { name: "BingeFlex", url: "https://bingeflex.vercel.app/" },
-      { name: "BooFlix", url: "https://www.booflix.to/" },
-      { name: "BrocoFlix", url: "https://brocoflix.xyz/" },
-      { name: "Cataz", url: "https://cataz.to/" },
-      { name: "Cineby RU", url: "https://www.cineby.ru/" },
-      { name: "CucuFlix", url: "https://cucuflix.xyz/" },
-      { name: "DashFlix", url: "https://dashflix.top/" },
-      { name: "Donkey", url: "https://donkey.to/" },
-      { name: "DopeBox", url: "https://dopebox.to/" },
-      { name: "456movie", url: "https://456movie.net/" },
-      { name: "CinemaDeck", url: "https://cinemadeck.com/" },
-      { name: "FMovies", url: "https://fmovies-hd.to/" },
-      { name: "KipStream", url: "https://kipstream.lol/" },
-      { name: "Resources", url: "https://rentry.co/megathread-movie-web" },
-      { name: "NetMirror", url: "https://iosmirror.cc/" },
-      { name: "PopcornMovies", url: "https://popcornmovies.org/" },
-      { name: "RgShows", url: "https://rgshows.vercel.app/" },
-      { name: "Streamflix", url: "https://watch.streamflix.one/" },
-      { name: "Watchug", url: "https://watch.ug/" },
-      { name: "YesMovies", url: "https://yesmovies.ag/" },
-      { name: "yuPPow", url: "https://yuppow.com/" },
-    ],
-  },
-  {
-    icon: Tv,
-    title: "More Services",
-    count: "21 platforms",
-    links: [
-      { name: "GoMovies", url: "https://gomovies.sx/" },
-      { name: "HiMovies", url: "https://himovies.sx/" },
-      { name: "HuraWatch", url: "https://hurawatchz.to/" },
-      { name: "KipFlix", url: "https://kipflix.xyz/" },
-      { name: "KipWatch", url: "https://kipwatch.xyz/" },
-      { name: "LetStream", url: "https://www.letstream.site/" },
-      { name: "LookMovie", url: "https://lookmovie2.to/" },
-      { name: "MappleTV", url: "https://mapple.tv/" },
-      { name: "FShareTV", url: "https://fsharetv.co/" },
-      { name: "Soap2Day", url: "https://ww25.soap2day.day/" },
-      { name: "SFlix", url: "https://sflix.to/" },
-      { name: "GoKuTV", url: "https://gokutv.pics" },
-      { name: "Goku", url: "https://goku.sx/" },
-      { name: "Bingeflix", url: "https://bingeflix.tv/" },
-      { name: "Guide", url: "https://a.imagem.app/3rEfOV.png" },
-      { name: "M-Zone", url: "https://m-zone.org/" },
-      { name: "Nunflix", url: "https://nunflix-ey9.pages.dev/" },
-      { name: "PressPlay", url: "https://www.pressplay.top/" },
-      { name: "Rive", url: "https://rivestream.xyz/" },
-      { name: "UniqueStream", url: "https://uniquestream.net/" },
-      { name: "XPrime", url: "https://xprime.tv/" },
-    ],
-  },
-  {
-    icon: Download,
-    title: "Direct Downloads",
-    count: "14 sites",
-    links: [
-      { name: "Cinema of the World", url: "https://worldscinema.org/" },
-      { name: "Light Downloads", url: "https://lightdl.xyz/" },
-      { name: "Mkv Cinemas", url: "https://mkvcinemas.kim/" },
-      { name: "UHDMovies", url: "https://uhdmovies.bet/" },
-      { name: "Vadapav", url: "https://vadapav.mov/" },
-      { name: "Vegamovies", url: "https://vegamovies.diet/" },
-      { name: "mkvCinemas", url: "https://mkvcinemas.how/" },
-      { name: "Pahe", url: "https://pahe.ink/" },
-      { name: "PSArips", url: "https://psa.wf/" },
-      { name: "rarefilmm", url: "https://rarefilmm.com/" },
-      { name: "Movie Channel", url: "https://free-movies.to/" },
-      { name: "UHDMovies", url: "https://uhdmovies.fans/" },
-      { name: "Vegamovies", url: "https://vegamovies.ms/" },
-      { name: "Vidnaija", url: "https://vidnaija.com.ng/" },
-    ],
-  },
-  {
-    icon: Globe,
-    title: "Asian Content",
-    count: "10 platforms",
-    links: [
-      { name: "AsiaFlix", url: "https://asiaflix.net/" },
-      { name: "Kisskh", url: "https://kisskh.co/" },
-      { name: "DramaHood", url: "https://kdramahood.com/" },
-      { name: "Einthusan", url: "https://einthusan.tv/" },
-      { name: "MyAsianTv", url: "https://myasiantv.ac/" },
-      { name: "MkvDrama", url: "https://mkvdrama.org/" },
-      { name: "DramaDay", url: "https://dramaday.me/" },
-      { name: "Dramanice", url: "https://ww3.dramanice.video/" },
-      { name: "345Movie", url: "https://www.345movie.net/" },
-      { name: "456movie", url: "https://456movie.net/" },
+      { name: "Anker Games", url: "https://ankergames.net/" },
+      { name: "Game Bounty", url: "https://gamebounty.world/" },
+      { name: "Games Pack", url: "https://gamespack.net/" },
+      { name: "STEAMRIP", url: "https://steamrip.com/" },
+      { name: "FileCR", url: "https://filecr.com" },
+      { name: "SteamUnderground", url: "https://steamunderground.net/" },
+      { name: "UnderGround Games", url: "https://undergroundgames.net/" },
+      { name: "Reloaded Steam", url: "https://reloadedsteam.com/" },
+      { name: "Repack-Games", url: "https://repack-games.com/" },
+      { name: "FitGirl Repacks", url: "https://fitgirl-repacks.site/" },
+      { name: "CG-gamesPC", url: "https://www.cg-gamespc.com/" },
+      { name: "Games4U", url: "https://games4u.org/" },
+      { name: "Get Free Games", url: "https://getfreegames.net/" },
     ],
   },
 ];
 
-export default function Streaming() {
+export default function Games() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
 
   useEffect(() => {
     // Update meta tags for SEO
     updateMetaTags({
-      title:
-        "Streaming Resources - Gateway Links 2K25 | Free Movies & TV Shows",
+      title: "Free Games Download - Gateway Links 2K25 | Gaming Links",
       description:
-        "Discover curated streaming platforms and download sites for movies, TV shows, and online content. Gateway Links 2K25 provides the ultimate collection of streaming resources.",
-      url: "https://gatewaylinks2k25.com/streaming",
+        "Browse gaming links and resources for all types of games. Gateway Links 2K25 provides curated gaming platform and free game download site links.",
+      url: "https://gatewaylinks2k25.com/games",
       keywords:
-        "streaming sites, movie streaming, TV shows, free movies, watch online, streaming links, cinema streaming",
+        "game links, gaming platforms, video games, game downloads, free games, PC games, game resources, gaming sites",
     });
   }, []);
 
@@ -207,16 +85,16 @@ export default function Streaming() {
         {/* Page Header */}
         <div className="mb-12 sm:mb-16">
           <h1 className="heading-lg text-[hsl(var(--text-primary))] mb-3">
-            Streaming Resources
+            Gaming Resources
           </h1>
           <p className="text-base sm:text-lg text-[hsl(var(--text-secondary))]">
-            Curated collection of streaming platforms and download sites
+            Curated collection of gaming platforms and download sites
           </p>
         </div>
 
         {/* Categories */}
         <div className="space-y-8 sm:space-y-10">
-          {streamingCategories.map((category) => {
+          {gamesCategories.map((category) => {
             const IconComponent = category.icon;
             return (
               <section
@@ -238,7 +116,7 @@ export default function Streaming() {
                 </p>
 
                 {/* Links Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
                   {category.links.map((link) => (
                     <a
                       key={link.name}
@@ -282,7 +160,7 @@ export default function Streaming() {
                 <li>
                   <Link
                     to="/streaming"
-                    className="hover:text-[hsl(var(--accent))] transition-colors font-medium"
+                    className="hover:text-[hsl(var(--accent))] transition-colors"
                   >
                     Streaming
                   </Link>
@@ -321,7 +199,7 @@ export default function Streaming() {
                 <li>
                   <Link
                     to="/games"
-                    className="hover:text-[hsl(var(--accent))] transition-colors"
+                    className="hover:text-[hsl(var(--accent))] transition-colors font-medium"
                   >
                     Games
                   </Link>
@@ -348,11 +226,11 @@ export default function Streaming() {
             </div>
             <div>
               <h3 className="text-sm font-semibold text-[hsl(var(--text-primary))] mb-4">
-                Streaming
+                Games
               </h3>
               <p className="text-sm text-[hsl(var(--text-secondary))] leading-relaxed">
-                Access the most comprehensive collection of streaming platforms
-                and download resources.
+                Access the most comprehensive collection of gaming platform and
+                game download resource links.
               </p>
             </div>
           </div>

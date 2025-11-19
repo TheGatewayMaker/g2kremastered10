@@ -9,6 +9,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Streaming from "./pages/Streaming";
+import Apps from "./pages/Apps";
+import Books from "./pages/Books";
+import AI from "./pages/AI";
+import Games from "./pages/Games";
+import Torrents from "./pages/Torrents";
 import CategoryPlaceholder from "./pages/CategoryPlaceholder";
 
 const queryClient = new QueryClient();
@@ -22,26 +27,11 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/streaming" element={<Streaming />} />
-          <Route
-            path="/apps"
-            element={<CategoryPlaceholder title="Apps & Softwares" />}
-          />
-          <Route
-            path="/books"
-            element={<CategoryPlaceholder title="Books & Novels" />}
-          />
-          <Route
-            path="/ai"
-            element={<CategoryPlaceholder title="Artificial Intelligence" />}
-          />
-          <Route
-            path="/games"
-            element={<CategoryPlaceholder title="Games" />}
-          />
-          <Route
-            path="/torrents"
-            element={<CategoryPlaceholder title="Torrents" />}
-          />
+          <Route path="/apps" element={<Apps />} />
+          <Route path="/books" element={<Books />} />
+          <Route path="/ai" element={<AI />} />
+          <Route path="/games" element={<Games />} />
+          <Route path="/torrents" element={<Torrents />} />
           <Route
             path="/darkweb"
             element={<CategoryPlaceholder title="Dark Web" isDevelopment />}

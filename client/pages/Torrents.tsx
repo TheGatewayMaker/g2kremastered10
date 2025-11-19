@@ -1,48 +1,38 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Sun, Moon, ArrowLeft } from "lucide-react";
+import { Sun, Moon, ArrowLeft, DownloadCloud } from "lucide-react";
 import { updateMetaTags } from "@/lib/meta-tags";
 
-interface CategoryPlaceholderProps {
-  title: string;
-  isDevelopment?: boolean;
-}
+const torrentsCategories = [
+  {
+    icon: DownloadCloud,
+    title: "Torrent Sites",
+    count: "6 resources",
+    links: [
+      { name: "ABC Torrent", url: "https://abctorrents.xyz/" },
+      { name: "Cloud Torrent", url: "https://cloudtorrents.com/" },
+      { name: "Lime Torrent", url: "https://www.limetorrents.lol/" },
+      { name: "Torrent Quest", url: "https://torrentquest.com/" },
+      { name: "BT4gpr", url: "https://bt4gprx.com/" },
+      { name: "1337x", url: "https://www.1337x.tw/" },
+    ],
+  },
+];
 
-export default function CategoryPlaceholder({
-  title,
-  isDevelopment = false,
-}: CategoryPlaceholderProps) {
+export default function Torrents() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
 
   useEffect(() => {
-    // Update meta tags for SEO based on category
-    const categoryDescriptions: { [key: string]: string } = {
-      "Apps & Softwares":
-        "Find and download essential applications and software tools. Gateway Links 2K25 provides curated links to productivity apps, development software, and utilities.",
-      "Books & Novels":
-        "Access a vast collection of e-books, novels, and digital reading resources. Discover literature links curated by Gateway Links 2K25.",
-      "Artificial Intelligence":
-        "Explore cutting-edge AI tools, machine learning resources, and intelligent applications. Gateway Links 2K25 brings the best AI tools in one place.",
-      Games:
-        "Browse gaming links and resources for all types of games. Gateway Links 2K25 provides comprehensive gaming platform and download site links.",
-      Torrents:
-        "Access organized torrent resources and links for content sharing. Gateway Links 2K25 curates the best torrent platforms and sites.",
-      "Dark Web": "Coming soon to Gateway Links 2K25.",
-      "Breach & Leaks": "Coming soon to Gateway Links 2K25.",
-    };
-
-    const description =
-      categoryDescriptions[title] ||
-      `Explore ${title} resources on Gateway Links 2K25`;
-    const keywords = `${title.toLowerCase()}, ${title} links, ${title} resources, gateway links 2k25`;
-
+    // Update meta tags for SEO
     updateMetaTags({
-      title: `${title} - Gateway Links 2K25 | Curated Links`,
-      description: description,
-      url: `https://gatewaylinks2k25.com/${title.toLowerCase().replace(/[^a-z0-9]/g, "")}`,
-      keywords: keywords,
+      title: "Torrent Resources - Gateway Links 2K25 | Torrent Sites",
+      description:
+        "Access organized torrent resources and links for content sharing. Gateway Links 2K25 curates the best torrent platforms and torrent sites.",
+      url: "https://gatewaylinks2k25.com/torrents",
+      keywords:
+        "torrent links, torrent sites, torrent resources, p2p sharing, torrent platforms, download torrents",
     });
-  }, [title]);
+  }, []);
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
@@ -85,36 +75,69 @@ export default function CategoryPlaceholder({
 
       {/* Main Content */}
       <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-        <div className="text-center space-y-8">
-          <div className="space-y-4">
-            <h1 className="heading-lg text-[hsl(var(--text-primary))]">
-              {title}
-            </h1>
-            {isDevelopment ? (
-              <>
-                <p className="text-lg sm:text-xl text-[hsl(var(--text-secondary))] max-w-2xl mx-auto">
-                  This section is currently under development and undergoing
-                  upgrades. Please check back soon for updates!
-                </p>
-                <div className="inline-block mt-4 px-6 py-3 rounded-lg bg-[hsl(var(--accent))] text-white font-medium">
-                  🚀 Coming Soon
-                </div>
-              </>
-            ) : (
-              <p className="text-lg sm:text-xl text-[hsl(var(--text-secondary))] max-w-2xl mx-auto">
-                This section is currently being populated. Check back soon or
-                use the navigation to explore other categories!
-              </p>
-            )}
-          </div>
+        {/* Page Header */}
+        <div className="mb-12 sm:mb-16">
+          <h1 className="heading-lg text-[hsl(var(--text-primary))] mb-3">
+            Torrents Resources
+          </h1>
+          <p className="text-base sm:text-lg text-[hsl(var(--text-secondary))]">
+            Curated collection of torrent sites and platforms
+          </p>
+        </div>
 
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-[hsl(var(--border))] text-[hsl(var(--text-primary))] hover:bg-[hsl(var(--bg-secondary))] transition-colors duration-200 font-medium"
-          >
-            <ArrowLeft size={18} />
-            Return to Gateway
-          </Link>
+        {/* Categories */}
+        <div className="space-y-8 sm:space-y-10">
+          {torrentsCategories.map((category) => {
+            const IconComponent = category.icon;
+            return (
+              <section
+                key={category.title}
+                className="group rounded-xl border border-[hsl(var(--border))] bg-[hsl(var(--bg-card))] p-6 sm:p-8 transition-all duration-300 hover:border-[hsl(var(--text-secondary))] hover:shadow-[0_4px_12px_var(--shadow-hover)]"
+              >
+                {/* Category Header */}
+                <div className="flex items-center gap-3 mb-2">
+                  <IconComponent
+                    size={24}
+                    className="text-[hsl(var(--text-secondary))] transition-colors duration-300 group-hover:text-[hsl(var(--text-primary))]"
+                  />
+                  <h2 className="heading-md text-[hsl(var(--text-primary))]">
+                    {category.title}
+                  </h2>
+                </div>
+                <p className="text-sm text-[hsl(var(--text-muted))] mb-6 font-medium">
+                  {category.count}
+                </p>
+
+                {/* Links Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                  {category.links.map((link) => (
+                    <a
+                      key={link.name}
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex items-center gap-2 px-3 py-2.5 rounded-md text-sm font-medium text-[hsl(var(--text-secondary))] transition-all duration-300 hover:text-[hsl(var(--text-primary))] hover:bg-[hsl(var(--bg-secondary))]"
+                    >
+                      <span>{link.name}</span>
+                      <svg
+                        className="w-4 h-4 opacity-40 transition-all duration-300 group-hover:opacity-100"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3v-6"
+                        />
+                      </svg>
+                    </a>
+                  ))}
+                </div>
+              </section>
+            );
+          })}
         </div>
       </main>
 
@@ -128,36 +151,36 @@ export default function CategoryPlaceholder({
               </h3>
               <ul className="space-y-2 text-sm text-[hsl(var(--text-secondary))]">
                 <li>
-                  <a
-                    href="/"
+                  <Link
+                    to="/streaming"
                     className="hover:text-[hsl(var(--accent))] transition-colors"
                   >
                     Streaming
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="/"
+                  <Link
+                    to="/apps"
                     className="hover:text-[hsl(var(--accent))] transition-colors"
                   >
                     Apps & Softwares
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="/"
+                  <Link
+                    to="/books"
                     className="hover:text-[hsl(var(--accent))] transition-colors"
                   >
                     Books & Novels
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="/"
+                  <Link
+                    to="/ai"
                     className="hover:text-[hsl(var(--accent))] transition-colors"
                   >
                     AI
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -167,20 +190,20 @@ export default function CategoryPlaceholder({
               </h3>
               <ul className="space-y-2 text-sm text-[hsl(var(--text-secondary))]">
                 <li>
-                  <a
-                    href="/"
+                  <Link
+                    to="/games"
                     className="hover:text-[hsl(var(--accent))] transition-colors"
                   >
                     Games
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    href="/"
-                    className="hover:text-[hsl(var(--accent))] transition-colors"
+                  <Link
+                    to="/torrents"
+                    className="hover:text-[hsl(var(--accent))] transition-colors font-medium"
                   >
                     Torrents
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <span className="text-[hsl(var(--text-muted))] cursor-not-allowed">
@@ -196,11 +219,11 @@ export default function CategoryPlaceholder({
             </div>
             <div>
               <h3 className="text-sm font-semibold text-[hsl(var(--text-primary))] mb-4">
-                Gateway Links
+                Torrents
               </h3>
               <p className="text-sm text-[hsl(var(--text-secondary))] leading-relaxed">
-                Your gateway to discover and explore digital resources across
-                multiple categories.
+                Access organized torrent resources and curated platform links
+                for P2P sharing and content distribution.
               </p>
             </div>
           </div>
