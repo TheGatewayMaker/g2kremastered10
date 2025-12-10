@@ -72,7 +72,10 @@ const gamesCategories = [
       { name: "SteamOra", url: "https://steamora.net/" },
       { name: "SteamUnderground", url: "https://steamunderground.net/" },
       { name: "Stevv Game", url: "https://www.stevvgame.com/" },
-      { name: "The Collection Chamber", url: "https://collectionchamber.blogspot.com/" },
+      {
+        name: "The Collection Chamber",
+        url: "https://collectionchamber.blogspot.com/",
+      },
       { name: "Torrminatorr", url: "https://torrminatorr.com/" },
       { name: "Triah Games", url: "https://triahgames.com/" },
       { name: "UnderGround Games", url: "https://undergroundgames.net/" },
@@ -87,9 +90,15 @@ const gamesCategories = [
     count: "8 tools",
     links: [
       { name: "Ascendara", url: "https://ascendara.app/" },
-      { name: "Heroic Games Launcher", url: "https://heroicgameslauncher.com/" },
+      {
+        name: "Heroic Games Launcher",
+        url: "https://heroicgameslauncher.com/",
+      },
       { name: "Playnite", url: "https://playnite.link/" },
-      { name: "Fit Launcher", url: "https://github.com/CarrotRub/Fit-Launcher/" },
+      {
+        name: "Fit Launcher",
+        url: "https://github.com/CarrotRub/Fit-Launcher/",
+      },
       { name: "GameVault", url: "https://gamevau.lt/" },
       { name: "GOG GALAXY 2.0", url: "https://www.gog.com/galaxy" },
       { name: "LaunchBox", url: "https://www.launchbox-app.com/" },

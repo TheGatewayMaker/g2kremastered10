@@ -51,7 +51,13 @@ export function ParticleBackground() {
     window.addEventListener("resize", resizeCanvas);
 
     // Initialize stars - much more dense
-    const starCount = Math.max(300, Math.min(800, Math.floor((window.innerWidth * window.innerHeight) / 3000)));
+    const starCount = Math.max(
+      300,
+      Math.min(
+        800,
+        Math.floor((window.innerWidth * window.innerHeight) / 3000),
+      ),
+    );
     starsRef.current = Array.from({ length: starCount }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
