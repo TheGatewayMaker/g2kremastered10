@@ -95,12 +95,18 @@
     @apply border-border;
   }
 
+  html,
   body {
     @apply bg-background text-foreground;
     font-family:
       -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", "Inter",
       sans-serif;
     -webkit-font-smoothing: antialiased;
+  }
+
+  #root {
+    position: relative;
+    z-index: 10;
   }
 
   @layer components {
