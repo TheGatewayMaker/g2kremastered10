@@ -41,7 +41,7 @@ export function ParticleBackground() {
     x: number,
     y: number,
     radius: number,
-    opacity: number
+    opacity: number,
   ) => {
     // Subtle glow
     ctx.fillStyle = `rgba(150, 180, 255, ${opacity * 0.25})`;
@@ -87,7 +87,9 @@ export function ParticleBackground() {
       200,
       Math.min(
         600,
-        Math.floor((window.innerWidth * window.innerHeight * extend * extend) / 8000),
+        Math.floor(
+          (window.innerWidth * window.innerHeight * extend * extend) / 8000,
+        ),
       ),
     );
 
@@ -160,7 +162,8 @@ export function ParticleBackground() {
             star.vx += mouseVx * 0.05;
             star.vy += mouseVy * 0.05;
 
-            star.currentOpacity = (star.baseOpacity + influence * 0.8) * twinkle;
+            star.currentOpacity =
+              (star.baseOpacity + influence * 0.8) * twinkle;
           } else {
             const repelForce = (1 - distance / repelRadius) * 0.2;
             star.vx -= (dx / distance) * repelForce;

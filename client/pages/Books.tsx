@@ -25,7 +25,8 @@ const booksCategories = [
       {
         name: "NovelBuddy",
         url: "https://novelbuddy.com/",
-        description: "Read light novels updated daily from Japan, Korea, and China",
+        description:
+          "Read light novels updated daily from Japan, Korea, and China",
       },
       {
         name: "Project Gutenberg",
@@ -52,7 +53,10 @@ const booksCategories = [
       { name: "Library Genesis (Alt)", url: "https://libgen.li/" },
       { name: "PDFDrive", url: "https://pdfdrive.to/" },
       { name: "PDFDrive (Alt)", url: "https://www.pdfdrive.com/" },
-      { name: "Z-Library Access Guide", url: "https://www.reddit.com/r/zlibrary/wiki/index/access/" },
+      {
+        name: "Z-Library Access Guide",
+        url: "https://www.reddit.com/r/zlibrary/wiki/index/access/",
+      },
     ],
   },
   {
@@ -118,9 +122,7 @@ const booksCategories = [
     icon: Music,
     title: "Music & Scores",
     count: "1 resources",
-    links: [
-      { name: "Musopen", url: "https://musopen.org/" },
-    ],
+    links: [{ name: "Musopen", url: "https://musopen.org/" }],
   },
   {
     icon: Image,
@@ -151,10 +153,19 @@ const booksCategories = [
     title: "Manga Downloaders",
     count: "4 resources",
     links: [
-      { name: "Comic-DL (GitHub)", url: "https://github.com/Xonshiz/comic-dl/" },
-      { name: "Comics Downloader (GitHub)", url: "https://github.com/Girbons/comics-downloader/" },
+      {
+        name: "Comic-DL (GitHub)",
+        url: "https://github.com/Xonshiz/comic-dl/",
+      },
+      {
+        name: "Comics Downloader (GitHub)",
+        url: "https://github.com/Girbons/comics-downloader/",
+      },
       { name: "HakuNeko", url: "https://hakuneko.download/" },
-      { name: "HakuNeko (GitHub)", url: "https://github.com/manga-download/hakuneko/" },
+      {
+        name: "HakuNeko (GitHub)",
+        url: "https://github.com/manga-download/hakuneko/",
+      },
     ],
   },
   {
@@ -163,7 +174,10 @@ const booksCategories = [
     count: "2 resources",
     links: [
       { name: "Rave Book Search", url: "https://ravebooksearch.com/" },
-      { name: "Recherche Ebook (French UI)", url: "https://recherche-ebook.fr/" },
+      {
+        name: "Recherche Ebook (French UI)",
+        url: "https://recherche-ebook.fr/",
+      },
     ],
   },
   {
@@ -177,8 +191,14 @@ const booksCategories = [
       { name: "Big AudioBooks", url: "https://bigaudiobooks.com/" },
       { name: "Book Audiobooks", url: "https://bookaudiobooks.com/" },
       { name: "Digitalbook", url: "https://www.digitalbook.io/" },
-      { name: "Free Classic AudioBooks", url: "https://www.freeclassicaudiobooks.com/" },
-      { name: "FullLengthAudiobooks", url: "https://fulllengthaudiobooks.net/" },
+      {
+        name: "Free Classic AudioBooks",
+        url: "https://www.freeclassicaudiobooks.com/",
+      },
+      {
+        name: "FullLengthAudiobooks",
+        url: "https://fulllengthaudiobooks.net/",
+      },
       { name: "GalaxyAudiobooks", url: "https://galaxyaudiobook.com/" },
       { name: "GoldenAudiobook", url: "https://goldenaudiobook.com/" },
       { name: "HD Audio Books", url: "https://hdaudiobooks.com/" },
