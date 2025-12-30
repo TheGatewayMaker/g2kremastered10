@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 interface Star {
   x: number;
   y: number;
-  y0: number; // Original Y position
+  y0: number;
   z: number;
   vz: number;
   baseOpacity: number;
@@ -11,6 +11,9 @@ interface Star {
   vx: number;
   vy: number;
   mass: number;
+  twinkleCycle: number;
+  twinkeSpeed: number;
+  radius: number;
 }
 
 export function ParticleBackground() {
@@ -20,9 +23,9 @@ export function ParticleBackground() {
   const lastMouseRef = useRef({ x: 0, y: 0 });
   const animationRef = useRef<number>();
   const [isDesktop, setIsDesktop] = useState(true);
+  const extendRef = useRef(1.5); // Canvas extends 1.5x beyond viewport
 
   useEffect(() => {
-    // Check if desktop on mount
     const checkDesktop = () => {
       setIsDesktop(window.innerWidth >= 1024);
     };
@@ -31,6 +34,33 @@ export function ParticleBackground() {
     window.addEventListener("resize", checkDesktop);
     return () => window.removeEventListener("resize", checkDesktop);
   }, []);
+
+  // Helper function to draw a realistic star
+  const drawStar = (
+    ctx: CanvasRenderingContext2D,
+    x: number,
+    y: number,
+    radius: number,
+    opacity: number,
+  ) => {
+    // Subtle glow
+    ctx.fillStyle = `rgba(150, 180, 255, ${opacity * 0.25})`;
+    ctx.beginPath();
+    ctx.arc(x, y, radius * 2.5, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Main star core
+    ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Inner bright core
+    ctx.fillStyle = `rgba(220, 240, 255, ${opacity * 0.7})`;
+    ctx.beginPath();
+    ctx.arc(x, y, radius * 0.6, 0, Math.PI * 2);
+    ctx.fill();
+  };
 
   useEffect(() => {
     if (!isDesktop) return;
@@ -41,40 +71,51 @@ export function ParticleBackground() {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Set canvas size
+    const extend = extendRef.current;
+
+    // Set canvas size to extend beyond viewport
     const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      canvas.width = window.innerWidth * extend;
+      canvas.height = window.innerHeight * extend;
     };
 
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // Initialize stars - much more dense
+    // Initialize stars with optimized count for performance
     const starCount = Math.max(
-      300,
+      200,
       Math.min(
-        800,
-        Math.floor((window.innerWidth * window.innerHeight) / 3000),
+        600,
+        Math.floor(
+          (window.innerWidth * window.innerHeight * extend * extend) / 8000,
+        ),
       ),
     );
-    starsRef.current = Array.from({ length: starCount }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      y0: Math.random() * canvas.height,
-      z: Math.random(),
-      vz: Math.random() * 0.008 + 0.003,
-      baseOpacity: Math.random() * 0.5 + 0.15,
-      currentOpacity: Math.random() * 0.5 + 0.15,
-      vx: (Math.random() - 0.5) * 0.3,
-      vy: (Math.random() - 0.5) * 0.2,
-      mass: Math.random() * 0.5 + 0.5,
-    }));
+
+    starsRef.current = Array.from({ length: starCount }, () => {
+      const radius = Math.random() * 1.2 + 0.6; // Larger stars
+      return {
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        y0: Math.random() * canvas.height,
+        z: Math.random(),
+        vz: Math.random() * 0.008 + 0.003,
+        baseOpacity: Math.random() * 0.6 + 0.2,
+        currentOpacity: Math.random() * 0.6 + 0.2,
+        vx: (Math.random() - 0.5) * 0.2,
+        vy: (Math.random() - 0.5) * 0.15,
+        mass: Math.random() * 0.5 + 0.5,
+        twinkleCycle: Math.random() * Math.PI * 2,
+        twinkeSpeed: Math.random() * 0.08 + 0.02,
+        radius: radius,
+      };
+    });
 
     // Mouse tracking with velocity
     const handleMouseMove = (e: MouseEvent) => {
-      const newX = e.clientX;
-      const newY = e.clientY;
+      const newX = e.clientX * extend;
+      const newY = e.clientY * extend;
 
       mouseRef.current.vx = newX - mouseRef.current.x;
       mouseRef.current.vy = newY - mouseRef.current.y;
@@ -89,7 +130,6 @@ export function ParticleBackground() {
 
     // Animation loop
     const animate = () => {
-      // Clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       const stars = starsRef.current;
@@ -101,6 +141,10 @@ export function ParticleBackground() {
       const repelRadius = 80;
 
       stars.forEach((star) => {
+        // Update twinkling cycle
+        star.twinkleCycle += star.twinkeSpeed;
+        const twinkle = Math.sin(star.twinkleCycle) * 0.3 + 0.7;
+
         // Calculate distance to mouse
         const dx = mouseX - star.x;
         const dy = mouseY - star.y;
@@ -108,29 +152,26 @@ export function ParticleBackground() {
 
         // Intelligent cursor interaction
         if (distance < attractRadius) {
-          // Attraction force at medium distance
           if (distance > repelRadius) {
             const influence = 1 - distance / attractRadius;
             const force = influence * 0.15;
 
-            // Attract particles toward cursor movement direction
             star.vx += (dx / distance) * force * 0.5;
             star.vy += (dy / distance) * force * 0.5;
 
-            // Also push in direction of cursor movement
             star.vx += mouseVx * 0.05;
             star.vy += mouseVy * 0.05;
 
-            star.currentOpacity = star.baseOpacity + influence * 0.8;
+            star.currentOpacity =
+              (star.baseOpacity + influence * 0.8) * twinkle;
           } else {
-            // Repulsion force when too close
             const repelForce = (1 - distance / repelRadius) * 0.2;
             star.vx -= (dx / distance) * repelForce;
             star.vy -= (dy / distance) * repelForce;
-            star.currentOpacity = star.baseOpacity + 0.5;
+            star.currentOpacity = (star.baseOpacity + 0.5) * twinkle;
           }
         } else {
-          star.currentOpacity = star.baseOpacity;
+          star.currentOpacity = star.baseOpacity * twinkle;
         }
 
         // Apply damping
@@ -154,29 +195,18 @@ export function ParticleBackground() {
           star.y0 = star.y;
           star.vx = 0;
           star.vy = 0;
-          star.baseOpacity = Math.random() * 0.5 + 0.15;
+          star.baseOpacity = Math.random() * 0.6 + 0.2;
+          star.twinkleCycle = Math.random() * Math.PI * 2;
         }
 
-        // Wrap around edges
-        if (star.x < -20) star.x = canvas.width + 20;
-        if (star.x > canvas.width + 20) star.x = -20;
-        if (star.y < -20) star.y = canvas.height + 20;
-        if (star.y > canvas.height + 20) star.y = -20;
+        // Wrap around edges - extend beyond viewport
+        if (star.x < -50) star.x = canvas.width + 50;
+        if (star.x > canvas.width + 50) star.x = -50;
+        if (star.y < -50) star.y = canvas.height + 50;
+        if (star.y > canvas.height + 50) star.y = -50;
 
-        // Calculate size based on depth
-        const size = star.z * 1.8;
-
-        // Draw star with subtle glow
-        ctx.fillStyle = `rgba(150, 200, 255, ${star.currentOpacity * 0.4})`;
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, Math.max(0.5, size * 1.3), 0, Math.PI * 2);
-        ctx.fill();
-
-        // Draw core
-        ctx.fillStyle = `rgba(200, 230, 255, ${star.currentOpacity})`;
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, Math.max(0.2, size), 0, Math.PI * 2);
-        ctx.fill();
+        // Draw realistic star
+        drawStar(ctx, star.x, star.y, star.radius, star.currentOpacity);
       });
 
       animationRef.current = requestAnimationFrame(animate);
@@ -198,13 +228,13 @@ export function ParticleBackground() {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none"
+      className="fixed pointer-events-none"
       style={{
         zIndex: 1,
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
+        top: "-25%",
+        left: "-25%",
+        width: `${150}%`,
+        height: `${150}%`,
       }}
     />
   );

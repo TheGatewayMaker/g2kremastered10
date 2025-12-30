@@ -7,21 +7,31 @@ const torrentsCategories = [
   {
     icon: DownloadCloud,
     title: "Torrent Sites",
-    count: "6 resources",
+    count: "18 resources",
     links: [
       { name: "ABC Torrent", url: "https://abctorrents.xyz/" },
-      { name: "Cloud Torrent", url: "https://cloudtorrents.com/" },
-      { name: "Lime Torrent", url: "https://www.limetorrents.lol/" },
-      { name: "Torrent Quest", url: "https://torrentquest.com/" },
+      { name: "Appnetica", url: "https://appnetica.com/" },
       { name: "BT4gpr", url: "https://bt4gprx.com/" },
+      { name: "ByXatab", url: "https://byxatab.com/" },
+      { name: "Cloud Torrent", url: "https://cloudtorrents.com/" },
+      { name: "DODI Repacks", url: "https://dodi-repacks.site/" },
+      { name: "DODI Repacks (Alt)", url: "https://dodi-repacks.download/" },
+      { name: "ElTorr", url: "https://eltorr.com/" },
+      { name: "FitGirl Repacks", url: "https://fitgirl-repacks.site/" },
+      { name: "Free GOG PC Games", url: "https://freegogpcgames.com/" },
+      { name: "KaOsKrew", url: "https://kaoskrew.org/" },
+      { name: "Lime Torrent", url: "https://www.limetorrents.lol/" },
+      { name: "RuTor", url: "https://rutor.info/" },
+      { name: "Tapochek", url: "https://tapochek.net/" },
+      { name: "Torrent Games", url: "https://torrent-games.games/" },
+      { name: "Torrent Games (Alt)", url: "https://torrent-games.net/" },
+      { name: "Torrent Quest", url: "https://torrentquest.com/" },
       { name: "1337x", url: "https://www.1337x.tw/" },
     ],
   },
 ];
 
 export default function Torrents() {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
-
   useEffect(() => {
     // Update meta tags for SEO
     updateMetaTags({
@@ -35,21 +45,8 @@ export default function Torrents() {
   }, []);
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
-    const prefersDark = window.matchMedia(
-      "(prefers-color-scheme: dark)",
-    ).matches;
-    const initialTheme = savedTheme || (prefersDark ? "dark" : "light");
-    setTheme(initialTheme);
-    document.documentElement.setAttribute("data-theme", initialTheme);
+    document.documentElement.setAttribute("data-theme", "dark");
   }, []);
-
-  const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
-    document.documentElement.setAttribute("data-theme", newTheme);
-    localStorage.setItem("theme", newTheme);
-  };
 
   return (
     <div className="min-h-screen flex flex-col transition-colors duration-200">
@@ -63,13 +60,6 @@ export default function Torrents() {
             <ArrowLeft size={18} />
             Back
           </Link>
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-md transition-all duration-200 hover:bg-[hsl(var(--bg-secondary))] text-[hsl(var(--text-secondary))] hover:text-[hsl(var(--text-primary))]"
-            aria-label="Toggle theme"
-          >
-            {theme === "light" ? <Moon size={20} /> : <Sun size={20} />}
-          </button>
         </div>
       </header>
 
