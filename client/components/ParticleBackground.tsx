@@ -93,17 +93,17 @@ export function ParticleBackground() {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // Initialize stars with much higher density
+    // Initialize stars with optimized count for performance
     const starCount = Math.max(
-      800,
+      200,
       Math.min(
-        2500,
-        Math.floor((window.innerWidth * window.innerHeight * extend * extend) / 2000),
+        600,
+        Math.floor((window.innerWidth * window.innerHeight * extend * extend) / 8000),
       ),
     );
 
     starsRef.current = Array.from({ length: starCount }, () => {
-      const radius = Math.random() * 0.6 + 0.15; // Smaller stars
+      const radius = Math.random() * 1.2 + 0.6; // Larger stars
       return {
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
