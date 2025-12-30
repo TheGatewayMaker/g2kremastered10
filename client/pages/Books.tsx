@@ -8,6 +8,11 @@ import {
   Download,
   Image,
   Headphones,
+  Code,
+  Newspaper,
+  Music,
+  Search,
+  Play,
 } from "lucide-react";
 import { updateMetaTags } from "@/lib/meta-tags";
 
